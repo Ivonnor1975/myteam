@@ -1,0 +1,25 @@
+{
+  "name": "myteam",
+  "version": "1.0.0",
+  "description": "Generates a Team web page with members info",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Ivonnor1975/myteam.git"
+  },
+  "author": "Ivonne Fernandez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ivonnor1975/myteam/issues"
+  },
+  "homepage": "https://github.com/Ivonnor1975/myteam#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
+}
