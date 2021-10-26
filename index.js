@@ -5,7 +5,6 @@ const { writeFile, copyFile } = require('./utils/generate-site');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-const Prompt = require('inquirer/lib/prompts/base');
 
 const employees = [];
 const promptManager = () => {
@@ -74,7 +73,7 @@ const validateEmails = () =>({
  }
 })
 
-//captue team members
+//capture team member options
 const promptoptions = ()  => {
    return inquirer.prompt([
    {
@@ -83,34 +82,127 @@ const promptoptions = ()  => {
     name: 'role',
     choices: ['Engineer', 'Intern', "I don't want to add more team members"]
   }
-  ])
+  ]).then(options = options=>{
+      if(options.role=="Engineer"){
+           PromptEngineer()
+          .then(data= data=>{
+           const engineer = new Engineer(data.name, data.id, data.email,data.role,data.github);
+           employees.push(engineer); 
+           return promptoptions()
+          })
+      }
+      if(options.role=="Intern"){  
+          PromptIntern()
+          .then(data= data=>{
+           const intern = new Intern(data.name, data.id, data.email,data.role,data.school);
+           employees.push(intern); 
+           console.log(employees) 
+           return promptoptions()
+          })
+      }    
+      return      
+   })      
 };
+
+//capture data for Engineers
+const PromptEngineer = () => {
+    return inquirer.prompt([
+      {
+      type: 'input',
+      name: 'name',
+      message: "What is the team Engineer's Name? (Required)",
+      validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter name!");
+          return false;
+        }
+      }
+    },
+    {
+      type: 'number',
+      name: 'id',
+      message: "What is the team Engineer's Id? (Required)",
+      ...validateNumbers(),
+    },
+    {
+      type: "input",
+      name: "email",
+      message: "What is Engineer email address?",
+      ...validateEmails(),
+    },
+    {
+      type: 'input',
+      name: 'github',
+      message: "What is the Engineer's github? (Required)",
+      validate: nameInput => {
+        if (nameInput) {
+          return true;
+        } else {
+          console.log("Please enter name!");
+          return false;
+        }
+      }
+    },
+]);
+};
+
+// capture Intern data
+const PromptIntern = () => {
+  return inquirer.prompt([
+    {
+    type: 'input',
+    name: 'name',
+    message: "What is the intern's Name? (Required)",
+    validate: nameInput => {
+      if (nameInput) {
+        return true;
+      } else {
+        console.log("Please enter Githube name!");
+        return false;
+      }
+    }
+  },
+  {
+    type: 'number',
+    name: 'id',
+    message: "What is the Intern's Id? (Required)",
+    ...validateNumbers(),
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "What is Intern's email address?",
+    ...validateEmails(),
+  },
+  {
+    type: 'input',
+    name: 'school',
+    message: "What is the Intern's School? (Required)",
+    validate: nameInput => {
+      if (nameInput) {
+        return true;
+      } else {
+        console.log("Please enter School!");
+        return false;
+      }
+    }
+  },
+]);
+};
+
 // TODO: Create a function to initialize app
 function init() {
   promptManager()
   .then(data  = data =>{
-        const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+        const manager = new Manager(data.name, data.id, data.email,data.role,data.officenumber);
         employees.push(manager);  
+        return promptoptions();
   })
   .catch(err => {
     console.log(err);
   });
-  promptoptions()
-  .then (option= option =>{
-    switch(memberoption.role) {
-      case "I don't want to add more team members":
-        console.log(membersData);
-        return membersData
-      case "Engineer":
-          //return engineer.getQuestions();
-      case "Intern":
-          //return intern.getQuestions();
-      //default:
-         // return [];
-      }
-  }) .catch(err => {
-    console.log(err);
-  });
-};
+ };
 // Function call to initialize app
 init();
