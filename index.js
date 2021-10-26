@@ -5,7 +5,9 @@ const { writeFile, copyFile } = require('./utils/generate-site');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
+const Prompt = require('inquirer/lib/prompts/base');
 
+const employees = [];
 const promptManager = () => {
   console.log(`
   =======================
@@ -73,11 +75,7 @@ const validateEmails = () =>({
 })
 
 //captue team members
-const promptMember = membersData => {
-   // If there's no 'members' array property, create one
-   if (!membersData.team) {
-        membersData.team = [];
-   }
+const promptoptions = ()  => {
    return inquirer.prompt([
    {
     type: 'list',
@@ -85,21 +83,34 @@ const promptMember = membersData => {
     name: 'role',
     choices: ['Engineer', 'Intern', "I don't want to add more team members"]
   }
-])
-.then(memberoption =>{
-   if(memberoption.role=="I don't want to add more team members"){
-
-   }else{
-    console.log(membersData);
-    return membersData;
-   };
-});
+  ])
 };
-
 // TODO: Create a function to initialize app
 function init() {
-  promptManager().then(promptMember)
-  .catch(err => {console.log(err)});
+  promptManager()
+  .then(data  = data =>{
+        const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+        employees.push(manager);  
+  })
+  .catch(err => {
+    console.log(err);
+  });
+  promptoptions()
+  .then (option= option =>{
+    switch(memberoption.role) {
+      case "I don't want to add more team members":
+        console.log(membersData);
+        return membersData
+      case "Engineer":
+          //return engineer.getQuestions();
+      case "Intern":
+          //return intern.getQuestions();
+      //default:
+         // return [];
+      }
+  }) .catch(err => {
+    console.log(err);
+  });
 };
 // Function call to initialize app
 init();
