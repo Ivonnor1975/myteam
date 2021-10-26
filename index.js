@@ -2,6 +2,10 @@ const inquirer = require('inquirer');
 const generatePage = require('./src/page-template');
 const { writeFile, copyFile } = require('./utils/generate-site');
 
+const Manager = require('./lib/Manager');
+const Intern = require('./lib/Intern');
+const Engineer = require('./lib/Engineer');
+
 const promptManager = () => {
   console.log(`
   =======================
@@ -9,7 +13,7 @@ const promptManager = () => {
   =======================
   `);
   return inquirer.prompt([
-    {
+      {
       type: 'input',
       name: 'name',
       message: "What is the team Manager's Name? (Required)",
@@ -32,21 +36,14 @@ const promptManager = () => {
       type: "input",
       name: "email",
       message: "What is Manager email address?",
-      validate: (answer) => {
-         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-         if(!emailRegex.test(answer)) {
-             console.log("You have to provide a valid email address!");
-             return false;
-         }
-         return true;
-      }
+      ...validateEmails(),
     },
     {
       type: 'number',
       name: 'officenumber',
       message: "What is the team Manager's office number? (Required)",
       ...validateNumbers(),
-    }
+    },
 ]);
 };
 
@@ -63,8 +60,24 @@ const validateNumbers = moreValidationChecks => ({
       return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
   },
 })
-const promptMember = () => {
+//Validate emails
+const validateEmails = () =>({
+  validate: answer => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if(!emailRegex.test(answer)) {
+        console.log("Please provide a valid email address!");
+        return false;
+    }
+    return true;
+ }
+})
+
+//captue team members
+const promptMember = membersData => {
    // If there's no 'members' array property, create one
+   if (!membersData.team) {
+        membersData.team = [];
+   }
    return inquirer.prompt([
    {
     type: 'list',
@@ -74,7 +87,12 @@ const promptMember = () => {
   }
 ])
 .then(memberoption =>{
-   console.log (memberoption.role);
+   if(memberoption.role=="I don't want to add more team members"){
+
+   }else{
+    console.log(membersData);
+    return membersData;
+   };
 });
 };
 
