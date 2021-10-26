@@ -63,7 +63,20 @@ const validateNumbers = moreValidationChecks => ({
       return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
   },
 })
-
+const promptMember = () => {
+   // If there's no 'members' array property, create one
+   return inquirer.prompt([
+   {
+    type: 'list',
+    messaage: 'What type of team member would you like to add?',
+    name: 'role',
+    choices: ['Engineer', 'Intern', "I don't want to add more team members"]
+  }
+])
+.then(memberoption =>{
+   console.log (memberoption.role);
+});
+};
 
 // TODO: Create a function to initialize app
 function init() {
