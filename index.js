@@ -96,11 +96,10 @@ const promptoptions = ()  => {
           .then(data= data=>{
            const intern = new Intern(data.name, data.id, data.email,data.role,data.school);
            employees.push(intern); 
-           console.log(employees) 
            return promptoptions()
           })
       }    
-      return      
+      return  
    })      
 };
 
@@ -196,9 +195,18 @@ const PromptIntern = () => {
 function init() {
   promptManager()
   .then(data  = data =>{
-        const manager = new Manager(data.name, data.id, data.email,data.role,data.officenumber);
-        employees.push(manager);  
-        return promptoptions();
+        const teammanager = new Manager(data.name, data.id, data.email,data.role,data.officenumber);
+        promptoptions()
+        return generatePage(teammanager);
+   }).then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
   })
   .catch(err => {
     console.log(err);

@@ -8,8 +8,3 @@ test('creates an Engineer object', () => {
     expect(engineer.email).toEqual("ivonor@hotmail.com");
     expect(engineer.github).toEqual("ivonor1975");
 });
-
-test('return GitHub url of the employee', () => {
-    const engineer = new Engineer("Ivonne",Math.floor(Math.random()*20),"ivonor@hotmail.com","ivonor1975","Engineer");
-    expect(engineer.getGithub()).toEqual(`https://github.com/${engineer.github}`);
-});
