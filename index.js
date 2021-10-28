@@ -6,7 +6,17 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
+const question=[
+  {
+   type: 'list',
+   messaage: 'What type of team member would you like to add?',
+   name: 'role',
+   choices: ['Engineer', 'Intern', "I don't want to add more team members"]
+ }
+ ];
+
 const employees = [];
+
 const promptManager = () => {
   console.log(`
   =======================
@@ -74,33 +84,40 @@ const validateEmails = () =>({
 })
 
 //capture team member options
-const promptoptions = ()  => {
-   return inquirer.prompt([
-   {
-    type: 'list',
-    messaage: 'What type of team member would you like to add?',
-    name: 'role',
-    choices: ['Engineer', 'Intern', "I don't want to add more team members"]
-  }
-  ]).then(options = options=>{
-      if(options.role=="Engineer"){
+const promptoptions = (data) => {
+   //save manager data on employee array
+   if(employees.length==0){
+        const man = new Manager(data.name, data.id, data.email,data.role,data.officenumber)
+        employees.push(man);
+      }
+   // capture team members
+   inquirer.prompt(question).then(options = options=>{
+       switch(options.role){
+         case "Engineer":
            PromptEngineer()
           .then(data= data=>{
            const engineer = new Engineer(data.name, data.id, data.email,data.role,data.github);
            employees.push(engineer); 
-           return promptoptions()
-          })
-      }
-      if(options.role=="Intern"){  
+           promptoptions();
+           });
+           break;
+        case "Intern":  
           PromptIntern()
           .then(data= data=>{
            const intern = new Intern(data.name, data.id, data.email,data.role,data.school);
            employees.push(intern); 
-           return promptoptions()
-          })
-      }    
-      return  
-   })      
+           promptoptions()
+          });
+          break;
+          default:
+             //datamember = (JSON.stringify(employees))
+             const pageHTML = generatePage(employees);
+             writeFile(pageHTML);
+             copyFile();
+             console.log("Files are created on ./dist");
+             return
+      }   
+    })      
 };
 
 //capture data for Engineers
@@ -193,24 +210,13 @@ const PromptIntern = () => {
 
 // TODO: Create a function to initialize app
 function init() {
-  promptManager()
-  .then(data  = data =>{
-        const teammanager = new Manager(data.name, data.id, data.email,data.role,data.officenumber);
-        promptoptions()
-        return generatePage(teammanager);
-   }).then(pageHTML => {
-    return writeFile(pageHTML);
-  })
-  .then(writeFileResponse => {
-    console.log(writeFileResponse);
-    return copyFile();
-  })
-  .then(copyFileResponse => {
-    console.log(copyFileResponse);
+   promptManager()
+   .then(data => {
+     promptoptions(data);
   })
   .catch(err => {
     console.log(err);
-  });
- };
+   });
+};
 // Function call to initialize app
 init();
