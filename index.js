@@ -208,7 +208,7 @@ const PromptIntern = () => {
 ]);
 };
 
-// TODO: Create a function to initialize app
+//Create a function to initialize app
 function init() {
    promptManager()
    .then(data => {

@@ -1,5 +1,6 @@
+//generate cards for all employees
 const generateTeam = (team)=>{
-    
+        //generate card for manager
         const generatemanager = (manager) => {
         return `<div class="card w-35 employee-card">
             <div class="card-header">
@@ -18,6 +19,7 @@ const generateTeam = (team)=>{
         </div>
         `;
     }
+    //generate cards for engineers
     const generateEngineers = Engineer =>{
            return `
                <div class="card employee-card">
@@ -35,6 +37,7 @@ const generateTeam = (team)=>{
             </div>
         `;
     }
+    //generate cards for Interns
     const generateInterns = Interns =>{
         return `
            <div class="card employee-card">
@@ -52,7 +55,7 @@ const generateTeam = (team)=>{
         </div>
         `;
     }
-  
+    //sort employees and build the cards by manager, engineers, and interns
     const arrman=[];
     arrman.push(...team.filter(employee => employee.getRole() === "Manager").map(manager=> generatemanager(manager)));
     arrman.push(...team.filter(employee => employee.getRole() === "Engineer").map(engies=> generateEngineers(engies)));
