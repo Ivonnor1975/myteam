@@ -28,8 +28,11 @@ A Node.js command-line application that takes in information about employees on 
   
   Answer all questions, then look for index.html and CSS style sheet files on dist folder
   
-     
   Look the following video:
+  
+  The generated index.html looks like this
+  ![image](https://user-images.githubusercontent.com/88918693/139514992-db6cd5ec-dc54-4986-b3f6-75bf2a9e32dc.png)
+
 
   ## License
   
