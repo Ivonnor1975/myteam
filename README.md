@@ -30,6 +30,8 @@ A Node.js command-line application that takes in information about employees on 
   
   Look the following video:
   
+  https://drive.google.com/file/d/16P1-7XwQn9xn2QcwQhKRCod-9WGTe00S/view?usp=sharing
+  
   The generated index.html looks like this
   ![image](https://user-images.githubusercontent.com/88918693/139514992-db6cd5ec-dc54-4986-b3f6-75bf2a9e32dc.png)
 
